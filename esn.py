@@ -59,7 +59,7 @@ class ESN:
                 },
                 "weights": self.weights,
                 "state": self.state
-            })
+            }, f)
 
     def load(filepath):
         #load data
