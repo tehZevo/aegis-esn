@@ -23,8 +23,11 @@ SAVE_STEPS = int(os.getenv("SAVE_STEPS", 10000))
 
 esn = None
 try:
+    print("Loading", MODEL_PATH)
     ESN.load(MODEL_PATH)
-except:
+    print(MODEL_PATH, "loaded")
+except FileNotFoundError as e:
+    print(e)
     print('"{}" not found. Creating new model.'.format(MODEL_PATH))
     esn = ESN(
         SIZE,
@@ -33,6 +36,7 @@ except:
         bias=BIAS,
         activation=ACTIVATION
     )
+    esn.save(MODEL_PATH)
 
 app = Flask(__name__)
 api = Api(app)
