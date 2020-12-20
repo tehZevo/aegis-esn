@@ -1,4 +1,6 @@
 import numpy as np
+import pickle
+import os
 
 ACTIVATIONS = {
     "tanh": np.tanh,
@@ -9,9 +11,13 @@ ACTIVATIONS = {
 class ESN:
     def __init__(self, size, density=0.1, spectral_radius=0.95, bias=True, activation="tanh"):
         self.size = size
-        self.activation = ACTIVATIONS[activation.lower()]
-        self.state = np.zeros(size)
+        self.density = density
+        self.spectral_radius = spectral_radius
         self.bias = bias
+        self.activation_name = activation
+        self.activation = ACTIVATIONS[activation.lower()]
+
+        self.state = np.zeros(size)
 
         #create weights
         w_size = size + 1 if bias else size
@@ -39,3 +45,30 @@ class ESN:
 
     def reset(self):
         self.state = np.zeros_like(self.state)
+
+    def save(self, filepath):
+        # os.makedirs(os.path.dirname(filepath), exist_ok=True)
+        with open(filepath, "wb") as f:
+            pickle.dump({
+                "params": {
+                    "size": self.size,
+                    "density": self.density,
+                    "spectral_radius": self.spectral_radius,
+                    "bias": self.bias,
+                    "activation": self.activation_name,
+                },
+                "weights": self.weights,
+                "state": self.state
+            })
+
+    def load(filepath):
+        #load data
+        with open(filepath, "rb") as f:
+            data = pickle.load(f)
+        #create esn with same params
+        esn = ESN(**data["params"])
+        #set weights and current state
+        esn.weights = data["weights"]
+        esn.state = data["state"]
+        #return esn
+        return esn

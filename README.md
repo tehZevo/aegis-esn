@@ -10,6 +10,8 @@ This node uses [nd-to-json](https://github.com/tehZevo/nd-to-json) to encode/dec
 * `SPECTRAL_RADIUS` - Spectral radius of the ESN weights; defaults to 0.99
 * `BIAS` - If true (default), will add a constant value "1" to the end of the ESN state
 * `ACTIVATION` - Activation of the ESN; `tanh` and `sigmoid` are supported, can also be `none`
+* `MODEL_PATH` - The path to save/load ESN models to/from, defaults to `models/esn`
+* `SAVE_STEPS` - The ESN will be saved every `SAVE_STEPS` steps
 
 ## Routes
 * `/read/<key>/<dim0>/<dim1>/.../<dimN>` - Retrieve values with shape specified by the `dim`s.

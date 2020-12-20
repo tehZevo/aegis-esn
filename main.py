@@ -12,25 +12,32 @@ import logging
 log = logging.getLogger('werkzeug')
 log.setLevel(logging.ERROR)
 
-#TODO: save/load state and weights
-
 PORT = os.getenv("PORT", 80)
 SIZE = int(os.getenv("SIZE", 1024))
 DENSITY = float(os.getenv("DENSITY", 0.1))
 SPECTRAL_RADIUS = float(os.getenv("RADIUS", 0.99))
 BIAS = os.getenv("BIAS", "true").lower() in (True, "true")
 ACTIVATION = os.getenv("ACTIVATION", "tanh")
+MODEL_PATH = os.getenv("MODEL_PATH", "models/esn")
+SAVE_STEPS = int(os.getenv("SAVE_STEPS", 10000))
 
-esn = ESN(
-    SIZE,
-    density=DENSITY,
-    spectral_radius=SPECTRAL_RADIUS,
-    bias=BIAS,
-    activation=ACTIVATION
-)
+esn = None
+try:
+    ESN.load(MODEL_PATH)
+except:
+    print('"{}" not found. Creating new model.'.format(MODEL_PATH))
+    esn = ESN(
+        SIZE,
+        density=DENSITY,
+        spectral_radius=SPECTRAL_RADIUS,
+        bias=BIAS,
+        activation=ACTIVATION
+    )
 
 app = Flask(__name__)
 api = Api(app)
+
+step_counter = 0
 
 class ReadResource(Resource):
     def post(self, key, shape):
@@ -58,7 +65,14 @@ class WriteResource(Resource):
 
 class StepResource(Resource):
     def post(self):
+        global step_counter
+        #step esn
         esn.step()
+        #save every SAVE_STEPS steps
+        step_counter += 1
+        if step_counter >= SAVE_STEPS:
+            esn.save(MODEL_PATH)
+            step_counter = 0
 
 api.add_resource(ReadResource, "/read/<key>/<path:shape>")
 api.add_resource(WriteResource, "/write/<key>")
