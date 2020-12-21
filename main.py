@@ -1,4 +1,6 @@
 import os
+import sys
+import signal
 
 from flask import Flask, request, jsonify
 from flask_restful import Resource, Api
@@ -12,6 +14,8 @@ import logging
 log = logging.getLogger('werkzeug')
 log.setLevel(logging.ERROR)
 
+signal.signal(signal.SIGTERM, lambda: sys.exit(0))
+
 PORT = os.getenv("PORT", 80)
 SIZE = int(os.getenv("SIZE", 1024))
 DENSITY = float(os.getenv("DENSITY", 0.1))
@@ -24,7 +28,7 @@ SAVE_STEPS = int(os.getenv("SAVE_STEPS", 10000))
 esn = None
 try:
     print("Loading", MODEL_PATH)
-    ESN.load(MODEL_PATH)
+    esn = ESN.load(MODEL_PATH)
     print(MODEL_PATH, "loaded")
 except FileNotFoundError as e:
     print(e)
