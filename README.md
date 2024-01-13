@@ -8,10 +8,11 @@ This node uses [nd-to-json](https://github.com/tehZevo/nd-to-json) to encode/dec
 * `SIZE` - Number of neurons in the ESN; defaults to 1024
 * `DENSITY` - Density of the weights in the ESN; defaults to 0.1
 * `SPECTRAL_RADIUS` - Spectral radius of the ESN weights; defaults to 0.99
-* `BIAS` - If true (default), will add a constant value "1" to the end of the ESN state
+* `BIAS` - If true, will add a constant value "1" to the end of the ESN state, defaults to false
 * `ACTIVATION` - Activation of the ESN; `tanh` and `sigmoid` are supported, can also be `none`
 * `MODEL_PATH` - The path to save/load ESN models to/from, defaults to `models/esn`
 * `SAVE_STEPS` - The ESN will be saved every `SAVE_STEPS` steps
+* TODO: document `NORM_RATE`
 
 ## Routes
 * `/read/<key>/<dim0>/<dim1>/.../<dimN>` - Retrieve values with shape specified by the `dim`s.
