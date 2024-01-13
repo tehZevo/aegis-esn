@@ -30,6 +30,7 @@ NORM_RATE = float(NORM_RATE) if NORM_RATE is not None else None
 SAVE_STEPS = int(os.getenv("SAVE_STEPS", 10000))
 
 #TODO: figure out why esn creation takes so long
+#TODO: its eigenvalue calculation, TODO: save eigenvalues
 
 esn = None
 try:
@@ -48,6 +49,7 @@ except FileNotFoundError as e:
         norm_rate=NORM_RATE
     )
     esn.save(MODEL_PATH)
+    print("Done creating model")
 
 app = Flask(__name__)
 api = Api(app)
