@@ -29,6 +29,8 @@ NORM_RATE = float(NORM_RATE) if NORM_RATE is not None else None
 
 SAVE_STEPS = int(os.getenv("SAVE_STEPS", 10000))
 
+#TODO: figure out why esn creation takes so long
+
 esn = None
 try:
     print("Loading", MODEL_PATH)
