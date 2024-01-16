@@ -1,7 +1,7 @@
 import numpy as np
+from scipy.sparse import csr_matrix
 import pickle
 import os
-
 
 ACTIVATIONS = {
     "tanh": np.tanh,
@@ -33,6 +33,7 @@ class ESN:
         #match desired spectral radius
         r = np.max(np.abs(np.linalg.eigvals(self.weights)))
         self.weights = self.weights * (spectral_radius / r)
+        self.weights = csr_matrix(self.weights)
 
     def step(self):
         x = self.state
@@ -47,7 +48,7 @@ class ESN:
         if self.bias:
             x = np.append(x, [1])
 
-        x = np.matmul(x, self.weights)
+        x = self.weights @ x
         if self.activation is not None:
             x = self.activation(x)
 
@@ -88,5 +89,4 @@ class ESN:
         esn.state = data["state"]
         esn.mean = data["mean"] if "mean" in data else np.zeros_like(esn.state)
         esn.deviation = data["deviation"] if "deviation" in data else np.ones_like(esn.state)
-        #return esn
         return esn

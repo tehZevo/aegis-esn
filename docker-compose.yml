@@ -1,0 +1,11 @@
+version: "3.8"
+services:
+
+  esn:
+    build: .
+    volumes:
+      - "./models:/app/models"
+    environment:
+      SIZE: 4096
+      SAVE_STEPS: 1000
+      MODEL_PATH: "models/esn.pkl"

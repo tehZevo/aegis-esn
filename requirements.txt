@@ -2,5 +2,6 @@ flask
 flask-restful
 requests
 numpy
+scipy
 git+https://github.com/tehzevo/nd-to-json
 git+https://github.com/tehzevo/chonky

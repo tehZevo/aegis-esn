@@ -24,3 +24,7 @@ This node uses [nd-to-json](https://github.com/tehZevo/nd-to-json) to encode/dec
 
 ## Notes
 * The ESN node is a bit different than other nodes in that you *push* data to it, as opposed to it *pulling* data from other nodes
+
+## TODK
+* noise
+* leak
